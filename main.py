@@ -1,5 +1,6 @@
 # Imports go at the top
 from microbit import *
+import music
 
 """
 Set everything up so:
@@ -23,26 +24,50 @@ Everything will be controled by gyroscope like:
 """
 
 
-i = 2
-j = 2
-while True:
+RIGHT = 2
+LEFT = 2
 
-    click__counter = 2
-    display.set_pixel(i, 2, 9)
 
-    if button_b.is_pressed():
-        i += 1
-        display.set_pixel(i, 2, 9)
+def set_pixels():
+    global RIGHT
+    global LEFT
+
+    display.set_pixel(RIGHT, 2, 9)
+
+    try:
+        if button_b.is_pressed():
+            if RIGHT == 4:
+                display.show(Image.SAD)
+                sleep(200)
+                music.play(music.POWER_DOWN)
+                display.clear()
+                sleep(100)
+                RIGHT = 2
+            else:
+                RIGHT += 1
+                display.set_pixel(RIGHT, 2, 9)
+                sleep(200)
+
+        elif button_a.is_pressed():
+            if LEFT == 0 or LEFT < 0:
+                display.show(Image.SAD)
+                sleep(200)
+                music.play(music.POWER_DOWN)
+                display.clear()
+                sleep(100)
+                LEFT = 2
+            else:
+                LEFT -= 1
+                display.set_pixel(LEFT, 2, 9)
+                sleep(200)
+
+    except:
+        display.show(Image.SAD)
         sleep(200)
-    elif button_a.is_pressed():
-        j -= 1
-        display.set_pixel(j, 2, 9)
-        sleep(200)
-
-    """elif button_a.is_pressed() and button_b.is_pressed():
         display.clear()
-        display.show(Image('00300:'
-                           '03630:'
-                           '36963:'
-                           '03630:'
-                           '00300'))"""
+        sleep(100)
+        display.set_pixel(2, 2, 9)
+
+
+while True:
+    set_pixels()
